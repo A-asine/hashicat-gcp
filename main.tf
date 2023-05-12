@@ -11,8 +11,8 @@ terraform {
 }
 
 provider "google" {
-  project = ${var.project}
-  region  = ${var.region}
+  project = var.project
+  region  = var.region
 }
 
 resource "google_compute_network" "hashicat" {
@@ -22,9 +22,9 @@ resource "google_compute_network" "hashicat" {
 
 resource "google_compute_subnetwork" "hashicat" {
   name          = "${var.prefix}-subnet"
-  region        = ${var.region}
+  region        = var.region
   network       = google_compute_network.hashicat.self_link
-  ip_cidr_range = ${var.subnet_prefix}
+  ip_cidr_range = var.subnet_prefix
 }
 
 resource "google_compute_firewall" "http-server" {
@@ -49,7 +49,7 @@ resource "tls_private_key" "ssh-key" {
 resource "google_compute_instance" "hashicat" {
   name         = "${var.prefix}-hashicat"
   zone         = "${var.region}-b"
-  machine_type = ${var.machine_type}
+  machine_type = var.machine_type
   
   boot_disk {
     initialize_params {
